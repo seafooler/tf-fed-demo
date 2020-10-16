@@ -3,7 +3,8 @@ import numpy as np
 from collections import namedtuple
 import math
 
-from Model import AlexNet
+# from Model import AlexNet
+from Model2 import Fashion_CNN
 from Dataset import Dataset
 
 # The definition of fed model
@@ -15,7 +16,8 @@ class Clients:
         self.sess = tf.Session(graph=self.graph)
 
         # Call the create function to build the computational graph of AlexNet
-        net = AlexNet(input_shape, num_classes, learning_rate, self.graph)
+        # net = AlexNet(input_shape, num_classes, learning_rate, self.graph)
+        net = Fashion_CNN(input_shape, num_classes, learning_rate, self.graph)
         self.model = FedModel(*net)
 
         # initialize
