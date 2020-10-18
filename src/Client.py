@@ -27,7 +27,7 @@ class Clients:
         # Load Cifar-10 dataset
         # NOTE: len(self.dataset.train) == clients_num
         self.dataset = Dataset(tf.keras.datasets.cifar10.load_data,
-                        split=clients_num)
+                        split=clients_num, subset_range=1)
 
     def run_test(self, num):
         with self.graph.as_default():
@@ -73,6 +73,8 @@ class Clients:
     def choose_clients(self, ratio=1.0):
         """ randomly choose some clients """
         client_num = self.get_clients_num()
+        print("client_num: ", client_num)
+        print("ratio: ", ratio)
         choose_num = math.floor(client_num * ratio)
         return np.random.permutation(client_num)[:choose_num]
 

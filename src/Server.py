@@ -24,9 +24,9 @@ def run_global_test(client, global_vars, test_num):
 
 
 #### SOME TRAINING PARAMS ####
-CLIENT_NUMBER = 100
-CLIENT_RATIO_PER_ROUND = 0.12
-epoch = 360
+CLIENT_NUMBER = 50
+CLIENT_RATIO_PER_ROUND = 0.02
+epoch = 120
 
 
 #### CREATE CLIENT AND LOAD DATASET ####
@@ -41,6 +41,7 @@ for ep in range(epoch):
     # Choose some clients that will train on this epoch
     random_clients = client.choose_clients(CLIENT_RATIO_PER_ROUND)
 
+    print("len of random_clients: ", len(random_clients))
     # Train with these clients
     for client_id in tqdm(random_clients, ascii=True):
         # Restore global vars to client's model

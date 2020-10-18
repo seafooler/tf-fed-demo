@@ -32,7 +32,7 @@ class BatchGenerator:
 
 
 class Dataset(object):
-    def __init__(self, load_data_func, one_hot=True, split=0):
+    def __init__(self, load_data_func, one_hot=True, split=0, subset_range=0):
         (x_train, y_train), (x_test, y_test) = load_data_func()
         print("Dataset: train-%d, test-%d" % (len(x_train), len(x_test)))
 
@@ -48,15 +48,33 @@ class Dataset(object):
         if split == 0:
             self.train = BatchGenerator(x_train, y_train)
         else:
-            self.train = self.splited_batch(x_train, y_train, split)
+            self.train = self.splited_batch(x_train, y_train, split, subset_range)
+
+        # if subset_range > 0:
+        #     print("subset_range: ", subset_range)
+        #     self.train = self.subset(x_train, y_train, subset_range)
+
+        print("len of train: ", len(self.train))
 
         self.test = BatchGenerator(x_test, y_test)
 
-    def splited_batch(self, x_data, y_data, count):
+    def splited_batch(self, x_data, y_data, count, subset_range):
         res = []
         l = len(x_data)
+        print("l: ", l)
+        print("count: ", count)
         for i in range(0, l, l//count):
             res.append(
-                BatchGenerator(x_data[i:i + l // count],
-                               y_data[i:i + l // count]))
+                BatchGenerator(x_data[i:i + (l // count) // subset_range],
+                               y_data[i:i + (l // count) // subset_range]))
+        print("l: ", (l // count) // subset_range)
+        return res
+
+    def subset(self, x_data, y_data, set_range):
+        res = []
+        l = len(x_data)
+        for i in range(0, l, l // set_range):
+            res.append(
+                BatchGenerator(x_data[i:i + l // set_range],
+                               y_data[i:i + l // set_range]))
         return res
